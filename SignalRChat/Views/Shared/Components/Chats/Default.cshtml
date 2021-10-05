@@ -1,0 +1,319 @@
+﻿@model IEnumerable<Chat>
+<!-- SidebarSearch Form -->
+<div class="form-inline">
+    <div class="input-group" data-widget="sidebar-search">
+        <input class="form-control form-control-sidebar" type="search" placeholder="Search" aria-label="Search">
+        <div class="input-group-append">
+            <button class="btn btn-sidebar">
+                <i class="fas fa-search fa-fw"></i>
+            </button>
+        </div>
+    </div>
+</div>
+<div class="sidebar">
+    <!-- Sidebar user panel (optional) -->
+    <!-- Sidebar Menu -->
+    <nav class="mt-2">
+        <div class="user-list">
+            <ul class="friend-list" data-widget="treeview" role="menu" data-accordion="false">
+                <!-- Add icons to the links using the .nav-icon class with font-awesome or any other icon font library -->
+                @foreach (var item in Model)
+                {
+
+                    <li class="nav-item">
+                        @if (item.Type == Helper.ChatType.Room)
+                        {
+                            <a asp-controller="Home" asp-action="Chat" asp-route-ChatID="@item.ID" class="clearfix">
+                                <img src="https://bootdey.com/img/Content/user_1.jpg" alt="" class="img-circle nav-icon">
+                                <div class="friend-name">
+                                    <strong style="overflow: hidden;">@item.Name</strong>
+                                </div>
+                                <div class="last-message text-muted">Hellooo</div>
+                                @*<small class="time text-muted">Just now</small>
+                                <small class="chat-alert label label-danger">1</small>*@
+                            </a>
+                            @*<a asp-controller="Home" asp-action="Chat" asp-route-ChatID="@item.ID" class="nav-link">
+                                    <i class="nav-icon fas fa-user"></i>
+                                    <p>
+                                        @item.Name
+                                        <span class="right badge badge-danger">New</span>
+                                    </p>
+                                </a>*@
+                        }
+                        else
+                        {
+                            string Name = item.ChatUsers.FirstOrDefault(x => x.UserID != User.FindFirst(ClaimTypes.NameIdentifier).Value).User.UserName;
+                    <a asp-controller="Home" asp-action="Chat" asp-route-ChatID="@item.ID" class="clearfix">
+                        <img src="https://bootdey.com/img/Content/user_1.jpg" alt="" class="img-circle">
+                        <div class="friend-name">
+                            <strong>@Name</strong>
+                        </div>
+                        <div class="last-message text-muted">Hellooo</div>
+                        @*<small class="time text-muted">Just now</small>
+                        <small class="chat-alert label label-danger">1</small>*@
+                    </a>
+                            @*<a asp-controller="Home" asp-action="Chat" asp-route-ChatID="@item.ID" class="nav-link">
+                                    <i class="nav-icon fas fa-user"></i>
+                                    <p>
+                                        @Name
+                                        <span class="right badge badge-danger">New</span>
+                                    </p>
+                                </a>*@
+                        }
+                    </li>
+
+                    <!--<li class="nav-item list-group-item list-group-item-action user-link  (routeId.Equals(room.Sender.Id.ToString()) ? "active text-white" : "")" data-roomId="room.Id" data-userId="room.Sender.Id">-->
+                    @*onclick='showChat("@user.Id")'*@
+                    <!--<a asp-controller="Home" asp-action="Index" asp-route-id="room.Sender.Id" class="position-absolute inset-0">-->
+                    @*<div class="image">
+                            <img class="contacts-list-img" src="~/dist/img/user3-128x128.jpg">
+                        </div>
+                        <div class="overflow-hidden w-100">
+                            <div class="d-flex mb-1">
+                                <h6 class="text-truncate mb-0 mr-auto username">@room.Sender.Name</h6>
+                                <p class="small text-nowrap last-updated" datetime="@room.UpdatedDate"></p>
+                            </div>
+                            <div class="text-truncate last-msg p-1 message">@Html.Raw(room.Excerpt)</div>
+                        </div>
+                        @if (room.UnreadCount > 0 && room.UpdateBy != room.Recipient.Id)
+                        {
+                            <div class="badge badge-circle badge-primary badge-border-light badge-top-right unread-count">
+                                <span>@room.UnreadCount</span>
+                            </div>
+                        }*@
+                    <!--</a>
+                        <a asp-controller="Home" asp-action="Index" asp-route-id="room.Sender.Id" class="position-absolute inset-0 "> </a>
+                        <div class="d-flex">
+                            <div class="profile-avatar mr-2">
+                                <img class="avatar-img" src="~/dist/img/user3-128x128.jpg" alt="avatar">
+                            </div>
+                            <div class="overflow-hidden w-100">
+                                <div class="d-flex mb-1">
+                                    <h6 class="text-truncate mb-0 mr-auto username">room.Sender.Name</h6>
+                                    <p class="small text-nowrap last-updated" datetime="room.UpdatedDate"></p>
+                                </div>
+                                <div class="text-truncate last-msg p-1 message">Html.Raw(room.Excerpt)</div>
+                            </div>
+                        </div>
+                        if (room.UnreadCount > 0 && room.UpdateBy != room.Recipient.Id)
+                        {
+                            <div class="badge badge-circle badge-primary badge-border-light badge-top-right unread-count">
+                                <span>room.UnreadCount</span>
+                            </div>
+                        }
+                    </li>-->
+                }
+
+            </ul>
+        </div>
+    </nav>
+    <!-- /.sidebar-menu -->
+</div>
+<script>
+        var selector = '.friend-list li';
+        $(selector).on('click', function () {
+            $(selector).removeClass('active');
+            $(this).addClass('active');
+        });
+
+</script>
+<style>
+
+    /*.friend-list:hover{
+            overflow:unset;
+        }*/
+    .friend-list {
+        list-style: none;
+        margin-left: -40px;
+    }
+
+        .friend-list li:hover {
+            background: rgba(255,255,255,.1);
+            color: #fff;
+        }
+
+        .friend-list li {
+            border-bottom: 1px solid #eee;
+        }
+
+            .friend-list li a img {
+                float: left;
+                width: 45px;
+                height: 45px;
+                margin-right: 10px;
+            }
+
+            .friend-list li a {
+                position: relative;
+                display: block;
+                padding: 10px;
+                transition: all .2s ease;
+                -webkit-transition: all .2s ease;
+                -moz-transition: all .2s ease;
+                -ms-transition: all .2s ease;
+                -o-transition: all .2s ease;
+            }
+
+            .friend-list li.active a {
+                /*background-color: #f1f5fc;*/
+                background-color: rgba(255,255,255,.9);
+            }
+
+            .friend-list li a .friend-name {
+                overflow: hidden;
+            }
+
+                .friend-list li a .friend-name,
+                .friend-list li a .friend-name:hover {
+                    color: #777;
+                }
+
+            .friend-list li a .last-message {
+                width: 65%;
+                white-space: nowrap;
+                text-overflow: ellipsis;
+                overflow: hidden;
+            }
+
+            .friend-list li a .time {
+                position: absolute;
+                top: 10px;
+                right: 8px;
+                overflow: hidden;
+            }
+
+    small, .small {
+        font-size: 85%;
+    }
+
+    .friend-list li a .chat-alert {
+        position: absolute;
+        right: 8px;
+        top: 27px;
+        font-size: 10px;
+        padding: 3px 5px;
+    }
+
+    .chat-message {
+        padding: 60px 20px 115px;
+    }
+
+    .chat {
+        list-style: none;
+        margin: 0;
+    }
+
+    .chat-message {
+        background: #f9f9f9;
+    }
+
+    .chat li img {
+        width: 45px;
+        height: 45px;
+        border-radius: 50em;
+        -moz-border-radius: 50em;
+        -webkit-border-radius: 50em;
+    }
+
+    img {
+        max-width: 100%;
+    }
+
+    .chat-body {
+        padding-bottom: 20px;
+    }
+
+    .chat li.left .chat-body {
+        margin-left: 70px;
+        background-color: #fff;
+    }
+
+    .chat li .chat-body {
+        position: relative;
+        font-size: 11px;
+        padding: 10px;
+        border: 1px solid #f1f5fc;
+        box-shadow: 0 1px 1px rgba(0,0,0,.05);
+        -moz-box-shadow: 0 1px 1px rgba(0,0,0,.05);
+        -webkit-box-shadow: 0 1px 1px rgba(0,0,0,.05);
+    }
+
+        .chat li .chat-body .header {
+            padding-bottom: 5px;
+            border-bottom: 1px solid #f1f5fc;
+        }
+
+        .chat li .chat-body p {
+            margin: 0;
+        }
+
+    .chat li.left .chat-body:before {
+        position: absolute;
+        top: 10px;
+        left: -8px;
+        display: inline-block;
+        background: #fff;
+        width: 16px;
+        height: 16px;
+        border-top: 1px solid #f1f5fc;
+        border-left: 1px solid #f1f5fc;
+        content: '';
+        transform: rotate(-45deg);
+        -webkit-transform: rotate(-45deg);
+        -moz-transform: rotate(-45deg);
+        -ms-transform: rotate(-45deg);
+        -o-transform: rotate(-45deg);
+    }
+
+    .chat li.right .chat-body:before {
+        position: absolute;
+        top: 10px;
+        right: -8px;
+        display: inline-block;
+        background: #fff;
+        width: 16px;
+        height: 16px;
+        border-top: 1px solid #f1f5fc;
+        border-right: 1px solid #f1f5fc;
+        content: '';
+        transform: rotate(45deg);
+        -webkit-transform: rotate(45deg);
+        -moz-transform: rotate(45deg);
+        -ms-transform: rotate(45deg);
+        -o-transform: rotate(45deg);
+    }
+
+    .chat li {
+        margin: 15px 0;
+    }
+
+        .chat li.right .chat-body {
+            margin-right: 70px;
+            background-color: #fff;
+        }
+
+    .chat-box {
+        /*
+      position: fixed;
+      bottom: 0;
+      left: 444px;
+      right: 0;
+    */
+        padding: 15px;
+        border-top: 1px solid #eee;
+        transition: all .5s ease;
+        -webkit-transition: all .5s ease;
+        -moz-transition: all .5s ease;
+        -ms-transition: all .5s ease;
+        -o-transition: all .5s ease;
+    }
+
+    .primary-font {
+        color: #3c8dbc;
+    }
+
+    a:hover, a:active, a:focus {
+        text-decoration: none;
+        outline: 0;
+    }
+</style>

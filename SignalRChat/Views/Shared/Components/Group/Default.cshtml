@@ -1,0 +1,66 @@
+﻿@model List<ApplicationUser>
+
+<div class="modal" id="myModal">
+    <div class="modal-dialog modal-dialog-scrollable">
+        <form asp-controller="Home" asp-action="CreateGroup">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="modal-content">
+                <!-- Modal Header -->
+                <div class="modal-header">
+                    <h4 class="modal-title">Create Group</h4>
+                    <button type="button" class="close closefirstmodal" onclick="confirmGroup()">×</button>
+                </div>
+                <div class=" row modal-header">
+                    <div class="col-lg-12 form-group">
+                        <label for="usr">Group Name</label>
+                        <input type="text" class="form-control" name="Name" placeholder="Enter Group Name..." required>
+                    </div>
+                    <div class="col-lg-12 form-group">
+                        <label for="Search">Search</label>
+                        <input type="text" class="form-control" id="Search" onchange="ReloadSearch()" placeholder="Search by name or phone number...">
+                    </div>
+                </div>
+                <!-- Modal body -->
+                <div class="modal-body">
+                    <!-- Material inline 1 -->
+                    @foreach (var user in Model)
+                    {
+                        <div class="form-check mb-2">
+                            <input type="checkbox" class="form-check-input mt-3" value="@user.Id" name="UsersIDs">
+                            <label class="form-check-label col-lg-12" for="materialInline1">
+                                <img class="contacts-list-img" src="~/assets/dist/img/user3-128x128.jpg">
+                                <span class="contacts-list-name mt-2 pl-5">
+                                    @user.UserName
+                                </span>
+                            </label>
+                        </div>
+                    }
+
+                </div>
+
+
+                <!-- Modal footer -->
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary closefirstmodal" id="closefirstmodal" onclick="confirmGroup()">Close</button>
+                    <button type="submit" id="btn_create" class="btn btn-primary">Create</button>
+                </div>
+
+            </div>
+        </form>
+    </div>
+</div>
+<script>
+    function ReloadEvents() {
+        $.ajax({
+        url: '@Url.Action("InvokeAsync", "Home")',
+        data: {
+        showPrevious: document.getElementById("cbShowPrevious").checked,
+        showUpcoming: document.getElementById("cbShowUpcoming").checked
+            },
+            success: function (data) {
+                $("#events").html(data);
+            }
+        })
+}
+</script>
+
